@@ -1,37 +1,30 @@
-import { useRef,useState } from "react";
+import { useRef, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { Link } from "react-router";
 import { NoteData, Tag } from "../types/types";
 
-
+import { v4 as uuidV4 } from "uuid";
 
 // import Select from "react-select";
 
 type NoteFormProps = {
-    onSubmit : (data : NoteData)=>void
-}
+  onSubmit: (data: NoteData) => void;
 
+};
 
-
-
-export const FormNote = ({onSubmit} :NoteFormProps) => {
+export const FormNote = ({ onSubmit }: NoteFormProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const markDownRef = useRef<HTMLTextAreaElement>(null);
 
-  const [selectedTags,setSelectedTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-
     e.preventDefault();
     onSubmit({
-title : titleRef.current!.value,
-description : markDownRef.current!.value,
-tags : []
-
-
-    })
-    
-    
-    }
+      title: titleRef.current!.value,
+      description: markDownRef.current!.value,
+      tags: [],
+    });
+  }
 
   return (
     <>
@@ -53,7 +46,31 @@ tags : []
           <div className="form-group">
             <label className="block text-gray-700">Role</label>
 
-            <CreatableSelect isMulti />
+            <CreatableSelect
+
+            onCreateOption={label =>{
+              const newTag = { id : uuidV4(),label}
+              onAddTag(newTag)
+              setSelectedTags(prev=>[...prev,newTag])
+            }}
+              value={selectedTags.map((tag) => {
+                return {
+                  label: tag.label,
+                  value: tag.id,
+                };
+              })}
+              onChange={(tags) => {
+                setSelectedTags(
+                  tags.map((tag) => {
+                    return {
+                      label: tag.label,
+                      id: tag.value,
+                    };
+                  })
+                );
+              }}
+              isMulti
+            />
           </div>
 
           <div className="form-group">
