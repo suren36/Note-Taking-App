@@ -4,25 +4,31 @@ import { HomePage } from '../pages/HomePage'
 import { NewNote } from '../pages/NewNote'
 import { NoteData } from '../types/types'
 import { Tag } from '../types/types'
+import { Note } from '../types/types'
+
 
 
 interface AllRoutesProps {
+  notes: Note[];
+  availableTags: Tag[];
   onCreateNote: (data: NoteData) => void;
-  onAddTag?: (tag: Tag) => void;
-
+  onAddTag: (tag: Tag) => void;
+  onUpdateTag: (id: string, label: string) => void; // Add this
+  onDeleteTag: (id: string) => void;
 
 }
 
 
 
-export const AllRoutes : React.FC<AllRoutesProps> = ({ onCreateNote, onAddTag }) => {
+
+export const AllRoutes : React.FC<AllRoutesProps> = ({ onCreateNote, onAddTag,availableTags }) => {
   return (
 
 <Routes>
 
 
 <Route path="/" element={<HomePage/>} />
-<Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={onAddTag} />} />
+<Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={onAddTag} availableTags={availableTags} />} />
 <Route path ="/edit" element ={<div>edit</div>} />
 <Route path ="/delete" element ={<div>delete</div>} />
 <Route path ="/:id">
