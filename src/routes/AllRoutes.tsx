@@ -1,10 +1,11 @@
 
 import { Route,Routes } from 'react-router'
-import { HomePage } from '../pages/HomePage'
+
 import { NewNote } from '../pages/NewNote'
 import { NoteData } from '../types/types'
 import { Tag } from '../types/types'
 import { Note } from '../types/types'
+import { NoteList } from '../pages/NoteList'
 
 
 
@@ -27,7 +28,7 @@ export const AllRoutes : React.FC<AllRoutesProps> = ({ onCreateNote, onAddTag,av
 <Routes>
 
 
-<Route path="/" element={<HomePage/>} />
+<Route path="/" element={<NoteList availableTags={availableTags}/>} />
 <Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={onAddTag} availableTags={availableTags} />} />
 <Route path ="/edit" element ={<div>edit</div>} />
 <Route path ="/delete" element ={<div>delete</div>} />

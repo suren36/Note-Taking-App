@@ -13,20 +13,20 @@ type NoteFormProps = {
   note?: NoteData;
 };
 
-export const FormNote = ({ 
-  onSubmit, 
-  onAddTag, 
+export const FormNote = ({
+  onSubmit,
+  onAddTag,
   availableTags,
-  note 
+  note,
 }: NoteFormProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const markDownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<Tag[]>(note?.tags || []);
   const [selectKey, setSelectKey] = useState(0);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   // Force select to update when availableTags changes
   useEffect(() => {
-    setSelectKey(prev => prev + 1);
+    setSelectKey((prev) => prev + 1);
   }, [availableTags]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,9 @@ const navigate = useNavigate();
     <div className="container mx-auto p-4 max-w-3xl">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-group">
-          <label className="block text-gray-700 text-lg font-medium">Title</label>
+          <label className="block text-gray-700 text-lg font-medium">
+            Title
+          </label>
           <input
             ref={titleRef}
             type="text"
@@ -56,7 +58,9 @@ const navigate = useNavigate();
         </div>
 
         <div className="form-group">
-          <label className="block text-gray-700 text-lg font-medium">Tags</label>
+          <label className="block text-gray-700 text-lg font-medium">
+            Tags
+          </label>
           <CreatableSelect
             key={`select-${selectKey}`}
             className="mt-1"
@@ -64,19 +68,19 @@ const navigate = useNavigate();
             onCreateOption={(label) => {
               const newTag = { id: uuidV4(), label };
               onAddTag(newTag);
-              setSelectedTags(prev => [...prev, newTag]);
+              setSelectedTags((prev) => [...prev, newTag]);
             }}
-            value={selectedTags.map(tag => ({
+            value={selectedTags.map((tag) => ({
               label: tag.label,
               value: tag.id,
             }))}
-            options={availableTags.map(tag => ({
+            options={availableTags.map((tag) => ({
               label: tag.label,
               value: tag.id,
             }))}
             onChange={(tags) => {
               setSelectedTags(
-                tags?.map(tag => ({
+                tags?.map((tag) => ({
                   id: tag.value,
                   label: tag.label,
                 })) || []
@@ -89,7 +93,9 @@ const navigate = useNavigate();
         </div>
 
         <div className="form-group">
-          <label className="block text-gray-700 text-lg font-medium">Description</label>
+          <label className="block text-gray-700 text-lg font-medium">
+            Description
+          </label>
           <textarea
             ref={markDownRef}
             className="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
