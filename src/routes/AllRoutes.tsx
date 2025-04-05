@@ -9,6 +9,7 @@ import { NoteList } from '../pages/NoteList'
 
 
 
+
 interface AllRoutesProps {
   notes: Note[];
   availableTags: Tag[];
@@ -22,25 +23,40 @@ interface AllRoutesProps {
 
 
 
-export const AllRoutes : React.FC<AllRoutesProps> = ({ onCreateNote, onAddTag,availableTags }) => {
+export const AllRoutes : React.FC<AllRoutesProps> = ({ notes, onCreateNote, onAddTag, availableTags }) => {
   return (
 
 <Routes>
+  <Route
+    path="/"
+    element={
+      <NoteList 
+        
+          availableTags={availableTags}
+          
+          notes={notes}
+      
 
-
-<Route path="/" element={<NoteList availableTags={availableTags}/>} />
-<Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={onAddTag} availableTags={availableTags} />} />
-<Route path ="/edit" element ={<div>edit</div>} />
-<Route path ="/delete" element ={<div>delete</div>} />
-<Route path ="/:id">
-
-<Route index element={<h1>Show</h1>}/>
-<Route path = "edit" element={<h1>Edit</h1>}/>
-<Route path = "*" element={<h1>Opps</h1>}/>
-
-
-
-</Route>
+      />
+    }
+  />
+  <Route
+    path="/new"
+    element={
+      <NewNote
+        onSubmit={onCreateNote}
+        onAddTag={onAddTag}
+        availableTags={availableTags}
+      />
+    }
+  />
+  <Route path="/edit" element={<div>Edit</div>} />
+  <Route path="/delete" element={<div>Delete</div>} />
+  <Route path="/:id">
+    <Route index element={<h1>Show</h1>} />
+    <Route path="edit" element={<h1>Edit</h1>} />
+    <Route path="*" element={<h1>Oops</h1>} />
+  </Route>
 </Routes>
 
 )
