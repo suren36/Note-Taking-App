@@ -9,6 +9,7 @@ type SimplifiedNote ={
   tags: Tag[];
   title: string;
   description: string;
+  id: string;
 
 
 }
@@ -24,21 +25,24 @@ export const NoteList = ({ availableTags ,notes }: NoteListProps) => {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
 
+  const filteredNotes = useMemo(() => {
+    return notes.filter((note) => {
+      return (
+        (title === "" ||
+          note.title.toLowerCase().includes(title.toLowerCase())) &&
+        (selectedTags.length === 0 ||
+          selectedTags.every((selectedTag) =>
+            note.tags.some((noteTag) => noteTag.id === selectedTag.id)
+          ))
+      );
+    });
+  }, [title, selectedTags, notes]);
+  
+  console.log("filteredNotes", filteredNotes); 
+  console.log("selectedTags", selectedTags);
+  
 
-  const transformedNote = notes.map((note) => {
-    return {
-      tag: note.tags,
-      title: note.title,
-      description: note.description,
-    };
-  });
-  const filteredNotes = notes.filter(note => {
-  const matchesTitle = title === "" || note.title.toLowerCase().includes(title.toLowerCase());
-  const matchesTags = selectedTags.length === 0 || selectedTags.every(tag =>
-    note.tags.some(noteTag => noteTag.id === tag.id)
-  );
-  return matchesTitle && matchesTags;
-});
+
 
  
 
@@ -122,14 +126,18 @@ export const NoteList = ({ availableTags ,notes }: NoteListProps) => {
   <div className="grid grid-cols-12 gap-2   p-4">
 
 
-{notes.map((note) => {
+{filteredNotes.map((note) => {
   return (
-    <div className="col-span-4" key={note.title}>
+    <div className="col-span-4" key={note.id}>
+
+
+
       <NoteCard  
       
         title={note.title}
         description={note.description}
         tags={note.tags.map((tag) => tag.label)} // Assuming tags is an array of strings
+        id={note.id}
       />
     </div>
   );

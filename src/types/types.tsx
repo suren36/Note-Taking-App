@@ -8,6 +8,8 @@ export type NoteData = {
   title: string;
   description: string;
   tags: Tag[];
+
+
 };
 
 export type RawNoteData = {

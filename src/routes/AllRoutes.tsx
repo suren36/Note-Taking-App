@@ -1,63 +1,73 @@
+import { Route, Routes } from "react-router";
 
-import { Route,Routes } from 'react-router'
-
-import { NewNote } from '../pages/NewNote'
-import { NoteData } from '../types/types'
-import { Tag } from '../types/types'
-import { Note } from '../types/types'
-import { NoteList } from '../pages/NoteList'
-
-
-
+import { NewNote } from "../pages/NewNote";
+import { NoteData } from "../types/types";
+import { Tag } from "../types/types";
+import { Note } from "../types/types";
+import { NoteList } from "../pages/NoteList";
+import { NoteLayout } from "../pages/NoteLayout";
+import {NoteDetail } from "../pages/NoteDetail";
+import { EditNote } from "../pages/EditNote";
+import { useParams } from "react-router";
 
 interface AllRoutesProps {
   notes: Note[];
   availableTags: Tag[];
   onCreateNote: (data: NoteData) => void;
   onAddTag: (tag: Tag) => void;
-  onUpdateTag: (id: string, label: string) => void; // Add this
-  onDeleteTag: (id: string) => void;
+  onUpdateNote: (id: string, data: NoteData) => void;
+
+
 
 }
 
+export const AllRoutes: React.FC<AllRoutesProps> = ({
+  notes,
+  onCreateNote,
+  onAddTag,
+  availableTags,
+  onUpdateNote,
 
-
-
-export const AllRoutes : React.FC<AllRoutesProps> = ({ notes, onCreateNote, onAddTag, availableTags }) => {
+}) => {
   return (
-
-<Routes>
-  <Route
-    path="/"
-    element={
-      <NoteList 
-        
-          availableTags={availableTags}
-          
-          notes={notes}
-      
-
+    <Routes>
+      <Route
+        path="/"
+        element={<NoteList availableTags={availableTags} notes={notes} />}
       />
-    }
-  />
-  <Route
-    path="/new"
-    element={
-      <NewNote
-        onSubmit={onCreateNote}
-        onAddTag={onAddTag}
-        availableTags={availableTags}
-      />
-    }
-  />
-  <Route path="/edit" element={<div>Edit</div>} />
-  <Route path="/delete" element={<div>Delete</div>} />
-  <Route path="/:id">
-    <Route index element={<h1>Show</h1>} />
-    <Route path="edit" element={<h1>Edit</h1>} />
-    <Route path="*" element={<h1>Oops</h1>} />
-  </Route>
-</Routes>
+      <Route
+        path="/new"
+        element={
+          <NewNote
+            onSubmit={onCreateNote}
 
-)
-}
+            onAddTag={onAddTag}
+            availableTags={availableTags}
+          />
+        }
+      />
+ 
+      <Route path="/delete" element={<div>Delete</div>} />
+      <Route path="/:id" element={<NoteLayout notes={notes} />}>
+        <Route index element=
+          {<NoteDetail/>}
+         />
+        <Route path="edit" element={ <EditNote
+            onSubmit={(data) => {
+
+              const { id } = useParams();
+              if (id) {
+                onUpdateNote(id, data);
+              } else {
+                console.error("Note ID is undefined");
+              }
+            }}
+            onAddTag={onAddTag}
+            availableTags={availableTags}
+          />} />
+      </Route>
+      <Route path="*" element={<h1>Oops</h1>} />
+
+    </Routes>
+  );
+};

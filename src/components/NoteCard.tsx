@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router';
 
 
 
@@ -7,17 +8,22 @@ type NoteCardProps = {
     title: string;
     description: string;
     tags: string[];
+    id: string;
 
   };
 export const NoteCard = (
-    { title, description, tags }: NoteCardProps
+    { title, description, tags ,id }: NoteCardProps
     
 
 ) => {
   return (
+
+
     <div>
 
-        <div className="bg-white shadow-md rounded-lg p-4 mb-4">
+      <Link to={`/${id}`}>
+      
+      <div className="bg-white shadow-md rounded-lg p-4 mb-4">
             <h2 className="text-xl font-bold">{title}</h2>
             <p className="text-gray-700">{description}</p>
             <div className="mt-2">
@@ -31,6 +37,8 @@ export const NoteCard = (
             ))}
             </div>
         </div>
+      </Link>
+
 
         
     </div>
